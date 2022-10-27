@@ -25,3 +25,23 @@ jobs:
         distribution: 'zulu'
     - name: Build with Maven
       run: mvn clean install
+    - name: Deploy local
+      run: |
+          cd /customer-service
+          mvn spring-boot:run
+          cd ../product-service
+          mvn spring-boot:run
+          cd ../worker
+          mvn spring-boot:run
+          cd ../sale-service
+          mvn spring-boot:run
+          mvn clean install -pl gateway
+    - name: Smoketest
+      run: |
+         npm install -g newman
+         newman run /documentation/postman-collections/ESPM-LOCAL.postman_collection.json
+          
+
+
+          
+      
